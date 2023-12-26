@@ -3,12 +3,18 @@ const helmet = require("helmet");
 const Joi = require("joi");
 const express = require("express");
 const logger = require("./logger");
+const config = require("config");
+
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(helmet());
+
+console.log("App Name: ", config.get("name"));
+console.log("Mail Server: ", config.get("mail.host"));
+console.log("Mail Password: ", config.get("mail.password"));
 
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));

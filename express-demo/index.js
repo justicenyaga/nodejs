@@ -8,10 +8,17 @@ const debug = require("debug")("app:startup");
 
 const app = express();
 
+app.set("view engine", "pug");
+app.set("views", "./views");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(helmet());
+
+console.log("App Name: ", config.get("name"));
+console.log("Mail Server: ", config.get("mail.host"));
+console.log("Mail Password: ", config.get("mail.password"));
 
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
@@ -27,7 +34,7 @@ const courses = [
 ];
 
 app.get("/", (req, res) => {
-  res.send("Hello world");
+  res.render("index", { title: "My Express App", message: "Hello" });
 });
 
 app.get("/api/courses", (req, res) => {

@@ -12,6 +12,18 @@ router.get("/", (req, res) => {
   res.send(genres);
 });
 
+router.post("/", (req, res) => {
+  const { error } = validateGenre(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  const genre = {
+    id: genres.length + 1,
+    name: req.body.name,
+  };
+  genres.push(genre);
+  res.send(genre);
+});
+
 router.get("/:id", (req, res) => {
   const genre = genres.find((g) => g.id === parseInt(req.params.id));
   if (!genre)
@@ -19,5 +31,13 @@ router.get("/:id", (req, res) => {
 
   res.send(genre);
 });
+
+const validateGenre = (genre) => {
+  const schema = {
+    name: Joi.string().required().min(3).label("Name"),
+  };
+
+  return Joi.validate(genre, schema);
+};
 
 module.exports = router;

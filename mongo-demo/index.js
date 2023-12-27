@@ -46,15 +46,32 @@ async function getCourses() {
   }
 }
 
+// QUERY FIRST
+// async function updateCourse(id) {
+//   const course = await Course.findById(id);
+//   if (!course) return;
+
+//   course.isPublished = true;
+//   course.author = "Another Author";
+
+//   const result = await course.save();
+//   console.log(result);
+// }
+
+//UPDATE FIRST
 async function updateCourse(id) {
-  const course = await Course.findById(id);
-  if (!course) return;
+  const course = await Course.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        author: "Justice Kimemia",
+        isPublished: true,
+      },
+    },
+    { new: true }
+  );
 
-  course.isPublished = true;
-  course.author = "Another Author";
-
-  const result = await course.save();
-  console.log(result);
+  console.log(course);
 }
 
 updateCourse("658c23cc0f0d5507e5723b9b");

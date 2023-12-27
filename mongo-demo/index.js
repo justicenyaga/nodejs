@@ -31,4 +31,19 @@ async function createCourse() {
   }
 }
 
-createCourse();
+async function getCourses() {
+  try {
+    const result = await Course.find({
+      author: "Justice Nyaga",
+      isPublished: true,
+    })
+      .limit(10)
+      .sort({ name: 1 })
+      .select({ name: 1, tags: 1 });
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+getCourses();

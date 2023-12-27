@@ -1,20 +1,18 @@
-//Asynchronous
 console.log("Before");
-getUser(1, (user) => {
-  getRepos(user.githubUsername, (repos) => {
-    getCommits(repos[0], (commit) => {
-      // CALLBACK HELL
-    });
-  });
-});
+getUser(1, getRepos);
 console.log("After");
 
-// Synchronouse
-console.log("Before");
-const user = getUser(1);
-const repos = getRepos(user.githubUsername);
-const commits = getCommits(repos[0]);
-console.log("After");
+function getRepos(user) {
+  getAPIRepos(user.githubUsername, getCommits);
+}
+
+function getCommits(repos) {
+  getAPICommits(repos.repos[0], displayCommits);
+}
+
+function displayCommits(commits) {
+  console.log(commits);
+}
 
 function getUser(id, callback) {
   setTimeout(() => {
@@ -23,9 +21,16 @@ function getUser(id, callback) {
   }, 2000);
 }
 
-function getRepos(username, callback) {
+function getAPIRepos(username, callback) {
   setTimeout(() => {
     console.log("Calling Github API...");
     callback({ username, repos: ["repo1", "repo2"] });
+  }, 2000);
+}
+
+function getAPICommits(repo, callback) {
+  setTimeout(() => {
+    console.log("Reading the list of commits from Github...");
+    callback({ repo, commits: ["commit1", "commit2"] });
   }, 2000);
 }

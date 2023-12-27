@@ -1,11 +1,16 @@
 console.log("Before");
-getUser(1, (user) => {
-  getRepos(user.githubUsername, (repos) => {
-    getCommits(repos.repos[0], (commits) => {
-      console.log(commits);
-    });
-  });
-});
+// getUser(1, (user) => {
+//   getRepos(user.githubUsername, (repos) => {
+//     getCommits(repos.repos[0], (commits) => {
+//       console.log(commits);
+//     });
+//   });
+// });
+getUser(1)
+  .then((user) => getRepos(user.githubUsername))
+  .then((repos) => getCommits(repos.repos[0]))
+  .then((commits) => console.log(commits))
+  .catch((error) => console.log("Error: ", error.message));
 console.log("After");
 
 function getUser(id) {

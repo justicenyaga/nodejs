@@ -6,7 +6,7 @@ mongoose
   .catch((error) => console.log("Could not connect to MongoDB...", error));
 
 const courseSchema = mongoose.Schema({
-  name: String,
+  name: { type: String, required: true },
   author: String,
   tags: [String],
   date: { type: Date, default: Date.now },
@@ -16,18 +16,19 @@ const courseSchema = mongoose.Schema({
 const Course = mongoose.model("Course", courseSchema);
 
 async function createCourse() {
-  try {
-    const course = new Course({
-      name: "Angular Course",
-      author: "Justice Nyaga",
-      tags: ["angular", "frontend"],
-      isPublished: true,
-    });
+  const course = new Course({
+    // name: "Angular Course",
+    author: "Justice Nyaga",
+    tags: ["angular", "frontend"],
+    isPublished: true,
+  });
 
+  try {
+    // await course.validate();
     const result = await course.save();
     console.log(result);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   }
 }
 
@@ -82,4 +83,6 @@ async function deleteCourse(id) {
   console.log(course);
 }
 
-deleteCourse("658c5d099974bec0ea15cb19");
+// deleteCourse("658c5d099974bec0ea15cb19");
+
+createCourse();

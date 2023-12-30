@@ -1,4 +1,4 @@
-const { genreSchema } = require("./genres");
+const { genreSchema } = require("./genre");
 const mongoose = require("mongoose");
 const Joi = require("joi");
 

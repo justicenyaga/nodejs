@@ -4,12 +4,12 @@ const auth = require("../middleware/auth");
 const express = require("express");
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     const genres = await Genre.find().sort("name");
     res.send(genres);
   } catch (ex) {
-    res.status(500).send("Something failed");
+    next(ex);
   }
 });
 

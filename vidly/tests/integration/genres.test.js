@@ -1,4 +1,5 @@
 const { Genre } = require("../../models/genre");
+const { User } = require("../../models/user");
 const request = require("supertest");
 const mongoose = require("mongoose");
 
@@ -52,6 +53,29 @@ describe("/api/genres", () => {
         .send({ name: "genre1" });
 
       expect(res.status).toBe(401);
+    });
+
+    it("should return 400 if the genre name is less than 5 characters", async () => {
+      const token = new User().generateAuthToken();
+
+      const res = await request(server)
+        .post("/api/genres")
+        .set("x-auth-token", token)
+        .send({ name: "1234" });
+
+      expect(res.status).toBe(400);
+    });
+
+    it("should return 400 if the genre name is mote than 50 characters", async () => {
+      const token = new User().generateAuthToken();
+
+      const name = new Array(52).join("a");
+      const res = await request(server)
+        .post("/api/genres")
+        .set("x-auth-token", token)
+        .send({ name });
+
+      expect(res.status).toBe(400);
     });
   });
 });

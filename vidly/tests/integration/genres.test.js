@@ -1,5 +1,6 @@
 const { Genre } = require("../../models/genre");
 const request = require("supertest");
+const mongoose = require("mongoose");
 
 let server;
 
@@ -25,6 +26,17 @@ describe("/api/genres", () => {
       expect(response.body.length).toBe(2);
       expect(response.body.some((g) => g.name === "genre1")).toBeTruthy();
       expect(response.body.some((g) => g.name === "genre2")).toBeTruthy();
+    });
+  });
+
+  describe("GET /:id", () => {
+    it("should return a genre given a valid id", async () => {
+      const genre = new Genre({ name: "genre1" });
+      await genre.save();
+
+      const res = await request(server).get("/api/genres/" + genre._id);
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty("name", genre.name);
     });
   });
 });

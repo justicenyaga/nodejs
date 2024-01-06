@@ -1,4 +1,6 @@
+const { Genre } = require("../../models/genre");
 const request = require("supertest");
+
 let server;
 
 describe("/api/genres", () => {
@@ -6,14 +8,23 @@ describe("/api/genres", () => {
     server = require("../../index");
   });
 
-  afterEach(() => {
-    server.close;
+  afterEach(async () => {
+    server.close();
+    await Genre.remove({});
   });
 
   describe("GET /", () => {
     it("should return all genres", async () => {
+      await Genre.collection.insertMany([
+        { name: "genre1" },
+        { name: "genre2" },
+      ]);
+
       const response = await request(server).get("/api/genres");
       expect(response.status).toBe(200);
+      expect(response.body.length).toBe(2);
+      expect(response.body.some((g) => g.name === "genre1")).toBeTruthy();
+      expect(response.body.some((g) => g.name === "genre2")).toBeTruthy();
     });
   });
 });

@@ -9,7 +9,7 @@
     "verbose": true
   },
   "scripts": {
-    "test": "jest --watchAll --coverage"
+    "test": "jest --watchAll --runInBand"
   },
   "keywords": [],
   "author": "",

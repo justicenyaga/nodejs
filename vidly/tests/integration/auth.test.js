@@ -10,7 +10,7 @@ describe("auth middlware", () => {
   });
 
   afterEach(async () => {
-    server.close();
+    await server.close();
     await Genre.deleteMany({});
   });
 
